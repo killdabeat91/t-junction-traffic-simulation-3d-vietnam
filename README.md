@@ -1,4 +1,4 @@
-# Traffic Simulation 3D
+# T-Junction Traffic Simulation 3D Vietnam
 
 A web-based 3D traffic simulation built with Three.js, featuring realistic vehicle behaviors, traffic light logic, and a detailed environment.
 
@@ -88,4 +88,5 @@ You can tweak the simulation parameters in `js/main.js` or `js/constants.js`:
 ## License
 
 This project is open source and available under the [MIT License](LICENSE).
+
 
