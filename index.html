@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mô Phỏng Giao Thông 3D</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <div id="canvas-container"></div>
+
+    <div class="ui-container">
+        <div class="top-bar">
+            <!-- Compact Horizontal Dashboard -->
+            <div class="dashboard" id="dashboard">
+                <div class="dash-toggle" onclick="toggleDashboard()">
+                    <span id="dash-icon">📊</span>
+                </div>
+                <div class="dash-content" id="dash-content">
+                    <div class="dash-item">
+                        <span class="dash-icon">🚗</span>
+                        <span class="dash-val" id="count-car">0</span>
+                    </div>
+                    <div class="dash-item">
+                        <span class="dash-icon">🏍️</span>
+                        <span class="dash-val" id="count-moto">0</span>
+                    </div>
+                    <div class="dash-item">
+                        <span class="dash-icon">🚛</span>
+                        <span class="dash-val" id="count-truck">0</span>
+                    </div>
+                    <div class="dash-sep"></div>
+                    <div class="dash-item">
+                        <span class="dash-label">Tổng</span>
+                        <span class="dash-val primary" id="count-total">0</span>
+                    </div>
+                    <div class="dash-item">
+                        <span class="dash-label">Đang chạy</span>
+                        <span class="dash-val success" id="count-active">0</span>
+                    </div>
+                    <div class="dash-sep"></div>
+                    <div class="dash-item">
+                        <span class="dash-label">Va chạm</span>
+                        <span class="dash-val danger" id="count-collision">0</span>
+                    </div>
+                    <div class="dash-item">
+                        <span class="dash-label">Vi phạm</span>
+                        <span class="dash-val warning" id="count-violation">0</span>
+                    </div>
+                    <div class="dash-sep"></div>
+                    <div class="dash-item phase-item">
+                        <span class="dash-label">Pha</span>
+                        <span class="dash-phase" id="current-phase">Xanh</span>
+                    </div>
+                </div>
+            </div>
+            <button class="settings-btn" onclick="toggleSettings()">⚙️</button>
+        </div>
+
+        <div class="settings-panel" id="settings">
+            <div class="panel-row">
+                <label>Chế Độ</label>
+                <div class="mode-switch">
+                    <div class="mode-opt active" onclick="setMode('fixed', this)">Cố Định</div>
+                    <div class="mode-opt" onclick="setMode('adaptive', this)">AI</div>
+                    <div class="mode-opt" onclick="setMode('manual', this)">Thủ Công</div>
+                </div>
+            </div>
+
+            <div id="manual-controls" style="display: none;">
+                <div class="panel-row">
+                    <label>Điều Khiển</label>
+                    <div class="manual-grid">
+                        <button class="manual-btn btn-green" onclick="forcePhase(0)">Chính 🟢</button>
+                        <button class="manual-btn btn-green" onclick="forcePhase(2)">Phụ 🟢</button>
+                        <button class="manual-btn btn-yellow" onclick="forcePhase(1)">Chính 🟡</button>
+                        <button class="manual-btn btn-yellow" onclick="forcePhase(3)">Phụ 🟡</button>
+                        <button class="manual-btn btn-red" style="grid-column: span 2" onclick="forcePhase(4)">🔴 TẤT CẢ
+                            ĐỎ</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="auto-controls">
+                <div class="panel-row">
+                    <label>Xanh Chính (s)</label>
+                    <input type="number" id="time-main" value="15" min="5" max="60">
+                </div>
+                <div class="panel-row">
+                    <label>Xanh Phụ (s)</label>
+                    <input type="number" id="time-side" value="10" min="5" max="60">
+                </div>
+            </div>
+
+            <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 10px 0;">
+
+            <div class="panel-row">
+                <label>Lưu lượng Chính</label>
+                <input type="range" id="flow-main" min="500" max="3000" value="1500">
+            </div>
+            <div class="panel-row">
+                <label>Lưu lượng Phụ</label>
+                <input type="range" id="flow-side" min="200" max="2000" value="800">
+            </div>
+            <div class="panel-row">
+                <label>Tốc độ</label>
+                <input type="range" id="time-scale" min="0.5" max="3.0" step="0.1" value="1.0">
+            </div>
+        </div>
+
+        <div class="compass" id="compass">
+            <div class="compass-arrow" id="compass-arrow">▲</div>
+            <div class="compass-label" id="compass-label">B</div>
+        </div>
+
+        <div class="controls-hint">
+            🖱️ Xoay & Thu phóng
+        </div>
+    </div>
+
+    <script>
+        let dashboardCollapsed = false;
+        function toggleDashboard() {
+            const content = document.getElementById('dash-content');
+            const icon = document.getElementById('dash-icon');
+            dashboardCollapsed = !dashboardCollapsed;
+
+            if (dashboardCollapsed) {
+                content.style.display = 'none';
+                icon.textContent = '📊';
+            } else {
+                content.style.display = 'flex';
+                icon.textContent = '✕';
+            }
+        }
+    </script>
+    <script type="module" src="js/main.js"></script>
+</body>
+
+</html>
