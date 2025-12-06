@@ -44,6 +44,9 @@ export function createEnvironment(scene) {
     }
 
     createBillboard(scene);
+
+    createSun(scene);
+    createClouds(scene);
 }
 
 function createRoadSegment(scene, length, x, z, rotY) {
@@ -222,4 +225,52 @@ function createBillboard(scene) {
     g.rotation.y = 0; // Face South towards intersection
 
     scene.add(g);
+}
+
+function createSun(scene) {
+    const sunGeo = new THREE.SphereGeometry(20, 32, 32);
+    const sunMat = new THREE.MeshBasicMaterial({ color: 0xffff00 });
+    const sun = new THREE.Mesh(sunGeo, sunMat);
+    // Position matches the directional light in main.js roughly
+    sun.position.set(100, 150, 50);
+    scene.add(sun);
+}
+
+function createClouds(scene) {
+    const cloudMat = new THREE.MeshToonMaterial({ color: 0xffffff });
+    const cloudGeo = new THREE.IcosahedronGeometry(1, 0); // Low-poly style clouds
+
+    const addCloud = (x, z, scale) => {
+        const group = new THREE.Group();
+
+        // Form a cloud from overlapping blobs
+        const pos = [
+            { x: 0, y: 0, z: 0, s: 4 },
+            { x: 3, y: -1, z: 0, s: 3 },
+            { x: -3, y: -1, z: 0, s: 3 },
+            { x: 0, y: 2, z: 1, s: 2.5 },
+            { x: 0, y: 2, z: -1, s: 2.5 }
+        ];
+
+        pos.forEach(p => {
+            const mesh = new THREE.Mesh(cloudGeo, cloudMat);
+            mesh.position.set(p.x, p.y, p.z);
+            mesh.scale.set(p.s, p.s, p.s);
+            group.add(mesh);
+        });
+
+        group.position.set(x, 60 + Math.random() * 30, z); // Random height
+        group.scale.set(scale, scale, scale);
+        // Random rotation
+        group.rotation.y = Math.random() * Math.PI * 2;
+
+        scene.add(group);
+    };
+
+    // Scatter some clouds around
+    for (let i = 0; i < 20; i++) {
+        const x = (Math.random() - 0.5) * 400;
+        const z = (Math.random() - 0.5) * 400;
+        addCloud(x, z, 1 + Math.random());
+    }
 }

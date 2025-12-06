@@ -26,10 +26,10 @@ controls.enableDamping = true;
 controls.maxPolarAngle = Math.PI / 2 - 0.1;
 
 // --- LIGHTS ---
-const hemiLight = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.8);
+const hemiLight = new THREE.HemisphereLight(0xffffff, 0xffffff, 1.2);
 scene.add(hemiLight);
 
-const dirLight = new THREE.DirectionalLight(0xffffff, 1.0);
+const dirLight = new THREE.DirectionalLight(0xffffff, 2.0);
 dirLight.position.set(100, 150, 50);
 dirLight.castShadow = true;
 dirLight.shadow.mapSize.set(2048, 2048);
