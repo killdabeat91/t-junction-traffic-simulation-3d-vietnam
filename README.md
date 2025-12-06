@@ -2,7 +2,8 @@
 
 A web-based 3D traffic simulation built with Three.js, featuring realistic vehicle behaviors, traffic light logic, and a detailed environment.
 
-<img width="1013" height="443" alt="image" src="https://github.com/user-attachments/assets/9a8ddf35-e8eb-4b60-bb32-1d615fe1b8c9" />
+<img width="962" height="504" alt="image" src="https://github.com/user-attachments/assets/5ba64499-0e4a-494e-94d4-18757c671af7" />
+
 
 
 ## Features
@@ -88,6 +89,7 @@ You can tweak the simulation parameters in `js/main.js` or `js/constants.js`:
 ## License
 
 This project is open source and available under the [MIT License](LICENSE).
+
 
 
 
