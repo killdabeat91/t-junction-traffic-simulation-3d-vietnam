@@ -39,8 +39,8 @@ A web-based 3D traffic simulation built with Three.js, featuring realistic vehic
 
 1.  **Clone the repository**:
     ```bash
-    git clone https://github.com/yourusername/traffic-simulation.git
-    cd traffic-simulation
+    git clone https://github.com/killdabeat91/t-junction-traffic-simulation-3d-vietnam
+    cd t-junction-traffic-simulation-3d-vietnam
     ```
 
 2.  **Run a local server**:
@@ -88,5 +88,6 @@ You can tweak the simulation parameters in `js/main.js` or `js/constants.js`:
 ## License
 
 This project is open source and available under the [MIT License](LICENSE).
+
 
 
